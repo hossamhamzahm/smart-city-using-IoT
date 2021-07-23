@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+        <link rel="stylesheet" href="css/main.css">
+        <!-- <link rel="stylesheet" href="css/all.css">     -->
+    <title>Utopia</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <!-- <div class="container"> -->
+            <!-- <div class="col-4"> -->
+                <a class="navbar-brand col-lg-5 mx-4" href="#">Utopia</a>
+                <button class="navbar-toggler  mx-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02"
+                    aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            <!-- </div> -->
+
+
+            <div class="collapse navbar-collapse row" id="navbarTogglerDemo02">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 col-lg-8 mx-3 mx-lg-0">
+                    <li class="nav-item mx-3 mg-lg-0">
+                        <a id="elapsed-time" class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Elapsed Time:</a>
+                    </li>
+                </ul>
+                <div class="col-lg-4 pl-0 mx-3 mx-lg-0">
+                    <span id="connection-btn" class="pl-0 btn btn-outline-success">Connected</span>
+                </dvi>
+            </div>
+        <!-- </div> -->
+    </nav>
+
+    <!-- Overlay div (Not connected) -->
+    <div id="board-overlay">
+        <h2 class="text-align-center position-absolute top-50 start-50 translate-middle"> 
+            The system is disconnected
+            
+            <br>
+            <div class="spinner-border text-light" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            
+            Reconnecting
+            </h2>
+    </div>
+
+    <div class="card text-center">
+        <div class="card-header">
+            <ul class="nav nav-pills card-header-pills d-flex">
+                    <li class="nav-item">
+                        <h5 class="nav-link text-dark mb-0">Light Pole Control</h5>
+                    </li>
+                
+                    <li class="nav-item">
+                        <a class="nav-link active" id="automatic" href="#">Automatic</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="manual">Manual</a>
+                    </li>
+                </ul>
+        </div>
+        <div class="card-body">
+            <h4 class="card-title d-inline-block" id="light-title">Low light intenisty, Light Poles are on</h5>
+
+                <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
+
+                <form action="/pole" class="form-check form-switch d-none h4 mx-3 mb-0" id="pole-form" method="POST" target="dummyframe">
+                    <input class="form-check-input mt-0" name="poleLight[status]" type="checkbox" id="flexSwitchCheckDefault">
+                </form>
+            <p class="card-text" id="light-description">If you want to control light poles manually, choose manual from the above options</p>
+        </div>
+    </div>
+
+
+    <div class="container-sm container-lg mt-5 mx-auto d-flex justify-content-between-lg flex-column flex-md-row">
+        <!-- Slot1 -->
+        <div class="card col-md-5 mb-3 mx-md-4" id="slot1">
+            <div class="card-header">
+                Parking System
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Parking slot No. 1</h5>
+                <p class="card-text">Reserved By: Car RFID Code</p>
+                <a href="#" class="btn btn-primary">Reserve</a>
+            </div>
+        </div>
+
+        <!-- Slot2 -->
+        <div class="card col-md-5 mb-3 mx-md-5" id="slot2">
+            <div class="card-header">
+                Parking System
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Parking slot No. 2</h5>
+                <p class="card-text">Reserved By: Car RFID Code</p>
+                <a href="#" class="btn btn-primary">Reserve</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+        crossorigin="anonymous"></script>
+    
+    <script src="js/index.js"></script>
+</body>
+
+</html>
