@@ -23,8 +23,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Starting the server
-const port = 3000;
+const port = process.env.PORT || 3000;;
 
+
+// Start listening on the specified port
 app.listen(port, () => {
     console.log("Listening on port 3000");
 });
@@ -70,4 +72,5 @@ app.post('/pole', (req, res) => {
 });
 
 
+// redirect any wrong url to the home page
 app.get('*', (req, res)=>res.redirect("/home"));

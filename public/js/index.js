@@ -61,12 +61,21 @@ async function updateContent() {
             await getData();
             await new Promise((resolve) => setTimeout(resolve, 1000));
             if (data.status) break;
+
+            // Showing connecting status after the page reloads
+            if (!connectionBtn.classList.contains('btn-outline-warning') && boardOverlay.style.display==="none") {
+                connectionBtn.classList.add('btn-outline-warning')
+                connectionBtn.classList.remove('btn-outline-success')
+                connectionBtn.classList.remove('btn-outline-danger')
+                connectionBtn.textContent = "Connecting...";
+            }
         }
     }
     if (!data.status) {
         boardOverlay.style.display = "block";
         if (!connectionBtn.classList.contains('btn-outline-danger')) {
             connectionBtn.classList.remove('btn-outline-success')
+            connectionBtn.classList.remove('btn-outline-warning')
             connectionBtn.classList.add('btn-outline-danger')
             connectionBtn.textContent = "Disconnected";
         }
@@ -77,6 +86,7 @@ async function updateContent() {
     boardOverlay.style.display = "none";
     if (!connectionBtn.classList.contains('btn-outline-success')) {
         connectionBtn.classList.remove('btn-outline-danger')
+        connectionBtn.classList.remove('btn-outline-warning')
         connectionBtn.classList.add('btn-outline-success')
         connectionBtn.textContent = "Connected";
     }
@@ -93,6 +103,7 @@ async function updateContent() {
         if (reserveButton1.classList.contains("btn-primary")) {
             reserveButton1.classList.remove("btn-primary");
             reserveButton1.classList.add("btn-secondary");
+            reserveButton1.textContent = "Reserved";
         }
     }
     else {
@@ -100,6 +111,7 @@ async function updateContent() {
         if (reserveButton1.classList.contains("btn-secondary")) {
             reserveButton1.classList.remove("btn-secondary");
             reserveButton1.classList.add("btn-primary");
+            reserveButton1.textContent = "Reserve";
         }
     }
 
@@ -109,6 +121,7 @@ async function updateContent() {
         if (reserveButton2.classList.contains("btn-primary")) {
             reserveButton2.classList.remove("btn-primary");
             reserveButton2.classList.add("btn-secondary");
+            reserveButton2.textContent = "Reserved";
         }
     }
     else {
@@ -116,6 +129,7 @@ async function updateContent() {
         if (reserveButton2.classList.contains("btn-secondary")) {
             reserveButton2.classList.remove("btn-secondary");
             reserveButton2.classList.add("btn-primary");
+            reserveButton2.textContent = "Reserve";
         }
     }
 }
@@ -132,7 +146,7 @@ automatic.addEventListener('click', (e) => {
 
         const poleLight = { mode: "automatic" };
         console.log(poleLight);
-        fetch("http://10.2.44.187:3000/pole", {
+        fetch("/pole", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
@@ -161,7 +175,7 @@ manual.addEventListener('click', (e) => {
         lightDescription.textContent = "If you want automatic control of light poles, choose automatic from the above options";
 
         const poleLight = { poleLight: { status: 0, mode: "manual" } };
-        fetch("http://10.2.44.187:3000/pole", {
+        fetch("/pole", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
