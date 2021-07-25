@@ -10,17 +10,17 @@
 *******************************/
 const int threshold = 700;
 const int sensorPin = A0;    // sensor input
-const int LEDpin= D5;      // LED pin
+const int LEDpin= D1;      // LED pin
 
 const int IRSensor1 = D2; // the number of the infrared sensor pin
 const int IRSensor2 = D3; 
 
 
 
-String ssid = "0_._0"; //Wifi Nertwork name
-String password = "g00gle000"; // Wifi Password
-String host = "192.168.1.12";
-String url = "/esp/";
+const String ssid = "0_._0"; //Wifi Nertwork name
+const String password = "g00gle000"; // Wifi Password
+const String host = "https://ecen203smartcity-hossamhamzahm-gmailcom.vercel.app";
+const String url = "/esp/";
 String json;
 DynamicJsonDocument doc(100);
 
@@ -28,7 +28,7 @@ DynamicJsonDocument doc(100);
 
 // Use WiFiClient class to create TCP connections 
 // WiFiClientSecure client; 
-WiFiClient client; 
+WiFiClientSecure client; 
 HTTPClient http; 
 
 
@@ -49,7 +49,8 @@ String IpAddress2String(const IPAddress& ipAddress)
 void connect_wifi(){
   WiFi.mode(WIFI_STA); 
   WiFi.begin(ssid, password);
-  
+
+  Serial.println();
   Serial.println("Connecting to " + ssid + "...");
   while(WiFi.status() != WL_CONNECTED){
     delay(100);
@@ -66,23 +67,20 @@ int SendData(){
   serializeJson(doc, json);
 
 
-  // client.setInsecure(); // this is the magical line that makes everything work
-  if (!client.connect(host, 3000)) 
+  client.setInsecure(); // this is the magical line that makes everything work
+  if (!client.connect(host, 443)) 
   { 
     Serial.println("connection failed"); 
     return -1; 
   }
     
-  http.begin(client, "http://" + host + ":3000" + url); //HTTP
+  http.begin(client, host + url); //HTTP
   http.addHeader("Content-Type", "application/json");
   http.POST(json);
 
-
-  Serial.print("Sent Json: ");
-  Serial.println(json);
   
   // Read response
-  Serial.println(http.getString());
+  // Serial.println(http.getString());
   deserializeJson(doc, http.getString());
 
   
@@ -105,27 +103,20 @@ void setup() {
   delay(10);
   connect_wifi();
 
-  // begining of hassnaa's code
   pinMode(LEDpin, OUTPUT);
   pinMode(sensorPin, INPUT);
-  // end of hassnaa's code
 
-
-  // begining of esraa's code
   pinMode (IRSensor1, INPUT); //initialize the infrared sensor sensor pin as an input:
   pinMode (IRSensor2, INPUT);
-  // end of Esraa's code
 }
 
 
 
 void loop() {
+  // Photo resistor and light pole control
   int photoResistor = analogRead(sensorPin);
   doc["photoResistor"] = photoResistor;
-  doc["time"] = millis();
   
-
-/*Hassnaa's code ****/
   if((String)doc["mode"] == "manual"){
       digitalWrite(LEDpin, (int)doc["status"]);
   }
@@ -138,12 +129,12 @@ void loop() {
         digitalWrite(LEDpin, HIGH);
       }
   }
-/****Hassnaa's code */
 
 
-/***Esraa's code ******/
-  doc["slot2"] = 0;
+  // parking slots code and the time passed
+  doc["time"] = millis();
   doc["slot1"] = 0;
+  doc["slot2"] = 0;
   if (!digitalRead (IRSensor1)){
         doc["slot1"] = 1;
     }
@@ -151,9 +142,8 @@ void loop() {
   if (!digitalRead (IRSensor2)){
         doc["slot2"] = 1;
   }
-/***Esraa's code ******/
 
-  
+  // sending the data to the server
   if(SendData() == -1) return;
   delay(100);
 }
